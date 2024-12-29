@@ -66,7 +66,6 @@ public class TokenValidator extends OncePerRequestFilter {
                 .build();
 
         return parser.parseClaimsJws(token).getBody();
-
     }
 
 }
