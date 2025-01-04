@@ -21,7 +21,7 @@ import java.util.Collections;
 public class AppConfig {
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http, TokenValidator tokenValidator) throws Exception {
 
         http.sessionManagement(Management -> Management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
@@ -30,7 +30,7 @@ public class AppConfig {
                         .anyRequest()
                         .permitAll())
 
-                .addFilterBefore(new TokenValidator(), BasicAuthenticationFilter.class)
+                .addFilterBefore(tokenValidator, BasicAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(configurationSource()));
 

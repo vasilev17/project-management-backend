@@ -28,7 +28,7 @@ public class Ticket {
     private LocalDate deadline;
     private String importance;
     private String progress;
-    //private Long projectId;
+    private Long projectID;
     private List<String> tags = new ArrayList<>();
 
     @JsonIgnore

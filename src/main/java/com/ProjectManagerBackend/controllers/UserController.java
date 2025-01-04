@@ -42,7 +42,7 @@ public class UserController {
     public ResponseEntity<AuthViewModel> register(@RequestBody RegistrationDTO registrationModel) throws Exception {
 
         //Check if user exists
-        User existingUser = userRepo.getByEmail(registrationModel.getEmail());
+        User existingUser = userRepo.findByEmail(registrationModel.getEmail());
 
         if (existingUser != null)
             throw new Exception("User with this email already exists!");
