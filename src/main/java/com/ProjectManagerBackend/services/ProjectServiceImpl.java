@@ -84,10 +84,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void deleteProject(Long projectId, User user) throws Exception {
 
-        //Check if the user making the edit is part of the project team
-        if (!getProjectTeam(projectId).contains(user)) {
-            throw new Exception("User not a project team member! Only team members can delete projects!");
-        }
+        checkTeamMembership(projectId, user, "User not a project team member! Only team members can delete projects!");
 
         getProjectById((projectId));
         projectRepo.deleteById(projectId);
@@ -101,10 +98,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project updateProject(User user, Project updatedProject, Long projectId) throws Exception {
 
-        //Check if the user making the edit is part of the project team
-        if (!getProjectTeam(projectId).contains(user)) {
-            throw new Exception("User not a project team member! Only team members can make changes!");
-        }
+        checkTeamMembership(projectId, user, "User not a project team member! Only team members can make changes!");
 
         Project project = getProjectById(projectId);
 
@@ -122,6 +116,13 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         return projectRepo.save(project);
+    }
+
+    @Override
+    public void checkTeamMembership(Long projectId, User user, String errorMsg) throws Exception {
+        if (!getProjectTeam(projectId).contains(user)) {
+            throw new Exception(errorMsg);
+        }
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.ProjectManagerBackend.dtos;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
@@ -12,5 +14,5 @@ public class TicketDTO {
     private LocalDate deadline;
     private String importance;
     private String progress;
-    private Long projectId;
+    private List<String> tags = new ArrayList<>();
 }

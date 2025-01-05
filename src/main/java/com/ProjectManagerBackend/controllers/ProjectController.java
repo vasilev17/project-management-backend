@@ -10,7 +10,7 @@ import com.ProjectManagerBackend.services.interfaces.CollaborationService;
 import com.ProjectManagerBackend.services.interfaces.UserFinder;
 import com.ProjectManagerBackend.viewmodels.CollaborationRequestViewModel;
 import com.ProjectManagerBackend.viewmodels.CollaborationViewModel;
-import com.ProjectManagerBackend.viewmodels.MessageViewModel;
+import com.ProjectManagerBackend.viewmodels.StatusMessageViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -71,20 +71,20 @@ public class ProjectController {
     }
 
     @DeleteMapping("/{projectId}")
-    public ResponseEntity<MessageViewModel> deleteProject(
+    public ResponseEntity<StatusMessageViewModel> deleteProject(
             @PathVariable Long projectId,
             @RequestHeader("Authorization") String jwt
 
     ) throws Exception {
         User user = userFinder.findUserProfileByJwt(jwt);
         projectService.deleteProject(projectId, user);
-        MessageViewModel res = new MessageViewModel("Project deleted successfully!");
+        StatusMessageViewModel res = new StatusMessageViewModel("Project deleted successfully!");
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @GetMapping("/search")
     public ResponseEntity<List<Project>> searchPersonalProjects(
-            @RequestParam(required = false) String keyword,
+            @RequestParam String keyword,
             @RequestHeader("Authorization") String jwt
     ) throws Exception {
         User user = userFinder.findUserProfileByJwt(jwt);
@@ -92,13 +92,15 @@ public class ProjectController {
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
-    @GetMapping("/{projectId}/discussion")
-    public ResponseEntity<Discussion> getDiscussionByProjectId(
-            @PathVariable Long projectId
-    ) throws Exception {
-        Discussion discussion = projectService.getDiscussionByProjectId(projectId);
-        return new ResponseEntity<>(discussion, HttpStatus.OK);
-    }
+    // ! Getting discussion messages logic is in MessageController !
+
+//    @GetMapping("/{projectId}/discussion")
+//    public ResponseEntity<Discussion> getDiscussionByProjectId(
+//            @PathVariable Long projectId
+//    ) throws Exception {
+//        Discussion discussion = projectService.getDiscussionByProjectId(projectId);
+//        return new ResponseEntity<>(discussion, HttpStatus.OK);
+//    }
 
     @PostMapping("/request/{projectId}")
     public ResponseEntity<CollaborationViewModel> sendCollaborationRequest(

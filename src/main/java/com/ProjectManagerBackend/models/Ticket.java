@@ -19,6 +19,9 @@ public class Ticket {
     @ManyToOne
     private User assignee;
 
+    @ManyToOne
+    private User author;
+
     @JsonIgnore
     @ManyToOne
     private Project project;

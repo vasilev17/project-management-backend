@@ -30,7 +30,7 @@ public class UserFinderImpl implements UserFinder {
 
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new Exception("user not found");
+            throw new Exception("User not found!");
         }
         return user;
     }
@@ -40,7 +40,7 @@ public class UserFinderImpl implements UserFinder {
 
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isEmpty()) {
-            throw new Exception("user not found");
+            throw new Exception("User not found!");
         }
         return optionalUser.get();
     }

@@ -28,4 +28,6 @@ public interface ProjectService {
 
     List<User> getProjectTeam(Long projectId) throws Exception;
 
+    void checkTeamMembership(Long projectId, User user, String errorMsg) throws Exception;
+
 }
