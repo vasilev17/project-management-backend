@@ -1,15 +1,18 @@
 package com.ProjectManagerBackend.controllers;
 
-
-import com.ProjectManagerBackend.models.Discussion;
+import com.ProjectManagerBackend.common.enums.DevelopmentScope;
+import com.ProjectManagerBackend.dtos.ProjectDTO;
+import com.ProjectManagerBackend.mappers.CollaborationMapper;
+import com.ProjectManagerBackend.mappers.ProjectMapper;
 import com.ProjectManagerBackend.models.Project;
 import com.ProjectManagerBackend.models.CollaborationRequest;
 import com.ProjectManagerBackend.models.User;
 import com.ProjectManagerBackend.services.interfaces.ProjectService;
 import com.ProjectManagerBackend.services.interfaces.CollaborationService;
-import com.ProjectManagerBackend.services.interfaces.UserFinder;
-import com.ProjectManagerBackend.viewmodels.CollaborationRequestViewModel;
-import com.ProjectManagerBackend.viewmodels.CollaborationViewModel;
+import com.ProjectManagerBackend.services.interfaces.UserService;
+import com.ProjectManagerBackend.viewmodels.CollaborationResponseViewModel;
+import com.ProjectManagerBackend.viewmodels.CollaborationInvitationViewModel;
+import com.ProjectManagerBackend.viewmodels.ProjectViewModel;
 import com.ProjectManagerBackend.viewmodels.StatusMessageViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,7 +26,7 @@ import java.util.List;
 public class ProjectController {
 
     @Autowired
-    private UserFinder userFinder;
+    private UserService userService;
 
     @Autowired
     private ProjectService projectService;
@@ -31,43 +34,52 @@ public class ProjectController {
     @Autowired
     private CollaborationService collaborationService;
 
+    @Autowired
+    private ProjectMapper projectMapper;
+
+    @Autowired
+    private CollaborationMapper collaborationMapper;
+
     @GetMapping
-    public ResponseEntity<List<Project>> getFilteredProjects(
+    public ResponseEntity<List<ProjectViewModel>> getFilteredProjects(
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) String category,
+            @RequestParam(required = false) DevelopmentScope developmentScope,
             @RequestParam(required = false) String tag
     ) throws Exception {
-        List<Project> projects = projectService.getProjectByTeam(email, category, tag);
-        return new ResponseEntity<>(projects, HttpStatus.OK);
+        List<Project> projects = projectService.getProjectsByTeam(email, developmentScope, tag);
+        List<ProjectViewModel> viewModels = projectMapper.convertProjectsToProjectViewModels(projects);
+        return new ResponseEntity<>(viewModels, HttpStatus.OK);
     }
 
     @GetMapping("/{projectId}")
     public ResponseEntity<Project> getProjectById(
             @PathVariable Long projectId
     ) throws Exception {
-        Project projects = projectService.getProjectById(projectId);
-        return new ResponseEntity<>(projects, HttpStatus.OK);
+        Project project = projectService.getProjectById(projectId);
+        return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Project> createProject(
+    public ResponseEntity<ProjectViewModel> createProject(
             @RequestHeader("Authorization") String jwt,
-            @RequestBody Project project
+            @RequestBody ProjectDTO projectModel
     ) throws Exception {
-        User user = userFinder.findUserProfileByJwt(jwt);
-        Project createdproject = projectService.createProject(project, user);
-        return new ResponseEntity<>(createdproject, HttpStatus.OK);
+        User user = userService.findUserProfileByJwt(jwt);
+        Project createdproject = projectService.createProject(projectModel, user);
+        ProjectViewModel viewModel = projectMapper.convertProjectToProjectViewModel(createdproject);
+        return new ResponseEntity<>(viewModel, HttpStatus.OK);
     }
 
     @PatchMapping("/{projectId}")
-    public ResponseEntity<Project> updateProject(
+    public ResponseEntity<ProjectViewModel> updateProject(
             @PathVariable Long projectId,
             @RequestHeader("Authorization") String jwt,
-            @RequestBody Project project
+            @RequestBody ProjectDTO projectModel
     ) throws Exception {
-        User user = userFinder.findUserProfileByJwt(jwt);
-        Project updatedproject = projectService.updateProject(user, project, projectId);
-        return new ResponseEntity<>(updatedproject, HttpStatus.OK);
+        User user = userService.findUserProfileByJwt(jwt);
+        Project updatedproject = projectService.updateProject(user, projectModel, projectId);
+        ProjectViewModel viewModel = projectMapper.convertProjectToProjectViewModel(updatedproject);
+        return new ResponseEntity<>(viewModel, HttpStatus.OK);
     }
 
     @DeleteMapping("/{projectId}")
@@ -76,55 +88,78 @@ public class ProjectController {
             @RequestHeader("Authorization") String jwt
 
     ) throws Exception {
-        User user = userFinder.findUserProfileByJwt(jwt);
+        User user = userService.findUserProfileByJwt(jwt);
         projectService.deleteProject(projectId, user);
         StatusMessageViewModel res = new StatusMessageViewModel("Project deleted successfully!");
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Project>> searchPersonalProjects(
+    public ResponseEntity<List<ProjectViewModel>> searchPersonalProjects(
             @RequestParam String keyword,
             @RequestHeader("Authorization") String jwt
     ) throws Exception {
-        User user = userFinder.findUserProfileByJwt(jwt);
+        User user = userService.findUserProfileByJwt(jwt);
         List<Project> projects = projectService.searchProjects(keyword, user);
-        return new ResponseEntity<>(projects, HttpStatus.OK);
+        List<ProjectViewModel> viewModels = projectMapper.convertProjectsToProjectViewModels(projects);
+        return new ResponseEntity<>(viewModels, HttpStatus.OK);
     }
 
     // ! Getting discussion messages logic is in MessageController !
-
-//    @GetMapping("/{projectId}/discussion")
-//    public ResponseEntity<Discussion> getDiscussionByProjectId(
-//            @PathVariable Long projectId
-//    ) throws Exception {
-//        Discussion discussion = projectService.getDiscussionByProjectId(projectId);
-//        return new ResponseEntity<>(discussion, HttpStatus.OK);
-//    }
+/*
+    @GetMapping("/{projectId}/discussion")
+    public ResponseEntity<Discussion> getDiscussionByProjectId(
+            @PathVariable Long projectId
+    ) throws Exception {
+        Discussion discussion = projectService.getDiscussionByProjectId(projectId);
+        return new ResponseEntity<>(discussion, HttpStatus.OK);
+    }
+*/
 
     @PostMapping("/request/{projectId}")
-    public ResponseEntity<CollaborationViewModel> sendCollaborationRequest(
+    public ResponseEntity<CollaborationInvitationViewModel> sendCollaborationRequest(
             @PathVariable Long projectId,
             @RequestHeader("Authorization") String jwt
     ) throws Exception {
-        User user = userFinder.findUserProfileByJwt(jwt);
+        User user = userService.findUserProfileByJwt(jwt);
         String collabToken = collaborationService.sendCollaborationRequest(user, projectId);
-        CollaborationViewModel res = new CollaborationViewModel("Collaboration token generated successfully!", collabToken);
+
+        CollaborationInvitationViewModel res = new CollaborationInvitationViewModel();
+        res.setCollabToken(collabToken);
+        res.setMessage("Collaboration token generated successfully!");
+
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
     @GetMapping("/accept_request")
-    public ResponseEntity<CollaborationRequestViewModel> acceptCollaborationRequest(
+    public ResponseEntity<CollaborationResponseViewModel> acceptCollaborationRequest(
             @RequestParam String token,
             @RequestHeader("Authorization") String jwt
     ) throws Exception {
-        User user = userFinder.findUserProfileByJwt(jwt);
+        User user = userService.findUserProfileByJwt(jwt);
+
         CollaborationRequest request = collaborationService.acceptCollaborationRequest(token, user.getId());
         projectService.addUserToProject(request.getProjectId(), user.getId());
-        CollaborationRequestViewModel res = new CollaborationRequestViewModel("Collaboration request accepted successfully!", request.getProjectId(), request.getCreator());
+
+        CollaborationResponseViewModel res = collaborationMapper.convertCollaborationRequestToCollaborationResponseViewModel(request);
+        res.setMessage("Collaboration request accepted successfully!");
+
         return new ResponseEntity<>(res, HttpStatus.ACCEPTED);
     }
 
+    @DeleteMapping("{projectId}/team/{userId}")
+    public ResponseEntity<StatusMessageViewModel> removeUserFromProjectTeam(
+            @PathVariable Long projectId,
+            @PathVariable Long userId,
+            @RequestHeader("Authorization") String jwt
+    ) throws Exception {
+
+        User user = userService.findUserProfileByJwt(jwt);
+        projectService.removeUserFromProject(projectId, user, userId);
+
+        StatusMessageViewModel res = new StatusMessageViewModel("User removed from project team successfully!");
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
 
 }
 

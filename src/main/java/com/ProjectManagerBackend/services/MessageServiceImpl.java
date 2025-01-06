@@ -2,7 +2,6 @@ package com.ProjectManagerBackend.services;
 
 import com.ProjectManagerBackend.models.Discussion;
 import com.ProjectManagerBackend.models.Message;
-import com.ProjectManagerBackend.models.Project;
 import com.ProjectManagerBackend.models.User;
 import com.ProjectManagerBackend.repositories.MessageRepository;
 import com.ProjectManagerBackend.repositories.UserRepository;

@@ -1,7 +1,6 @@
 package com.ProjectManagerBackend.services.interfaces;
 
 import com.ProjectManagerBackend.models.Comment;
-import com.ProjectManagerBackend.models.Project;
 import com.ProjectManagerBackend.models.Ticket;
 import com.ProjectManagerBackend.models.User;
 

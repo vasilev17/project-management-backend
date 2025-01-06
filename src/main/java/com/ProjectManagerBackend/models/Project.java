@@ -1,5 +1,6 @@
 package com.ProjectManagerBackend.models;
 
+import com.ProjectManagerBackend.common.enums.DevelopmentScope;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,9 +22,10 @@ public class Project {
 
     private String name;
     private String description;
-    private String developmentScope;
-    
     private List<String> tags = new ArrayList<>();
+    
+    @Enumerated(EnumType.STRING)
+    private DevelopmentScope developmentScope;
 
     @ManyToOne
     private User creator;

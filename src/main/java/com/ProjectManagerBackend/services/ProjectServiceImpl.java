@@ -1,12 +1,15 @@
 package com.ProjectManagerBackend.services;
 
+import com.ProjectManagerBackend.common.enums.DevelopmentScope;
+import com.ProjectManagerBackend.dtos.ProjectDTO;
+import com.ProjectManagerBackend.mappers.ProjectMapper;
 import com.ProjectManagerBackend.models.Discussion;
 import com.ProjectManagerBackend.models.Project;
 import com.ProjectManagerBackend.models.User;
 import com.ProjectManagerBackend.repositories.ProjectRepository;
 import com.ProjectManagerBackend.services.interfaces.DiscussionService;
 import com.ProjectManagerBackend.services.interfaces.ProjectService;
-import com.ProjectManagerBackend.services.interfaces.UserFinder;
+import com.ProjectManagerBackend.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,20 +24,19 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectRepository projectRepo;
 
     @Autowired
-    private UserFinder userFinder;
+    private UserService userService;
 
     @Autowired
     private DiscussionService discussionService;
 
-    @Override
-    public Project createProject(Project project, User user) throws Exception {
-        Project createdProject = new Project();
+    @Autowired
+    private ProjectMapper projectMapper;
 
+    @Override
+    public Project createProject(ProjectDTO projectModel, User user) throws Exception {
+
+        Project createdProject = projectMapper.convertProjectDTOToProject(projectModel);
         createdProject.setCreator(user);
-        createdProject.setTags(project.getTags());
-        createdProject.setName(project.getName());
-        createdProject.setDevelopmentScope(project.getDevelopmentScope());
-        createdProject.setDescription(project.getDescription());
         createdProject.getTeam().add(user);
 
         Project saveProject = projectRepo.save(createdProject);
@@ -49,16 +51,16 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> getProjectByTeam(String email, String category, String tag) throws Exception {
+    public List<Project> getProjectsByTeam(String email, DevelopmentScope developmentScope, String tag) throws Exception {
 
         List<Project> projects = projectRepo.findAll();
 
         if (email != null) {
-            User user = userFinder.findUserByEmail(email);
+            User user = userService.findUserByEmail(email);
             projects = projectRepo.findByTeamContainingOrCreator(user, user);
         }
-        if (category != null) {
-            projects = projects.stream().filter(project -> project.getDevelopmentScope().equals(category))
+        if (developmentScope != null) {
+            projects = projects.stream().filter(project -> project.getDevelopmentScope().equals(developmentScope))
                     .collect(Collectors.toList());
         }
         if (tag != null) {
@@ -96,23 +98,23 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project updateProject(User user, Project updatedProject, Long projectId) throws Exception {
+    public Project updateProject(User user, ProjectDTO updatedProjectModel, Long projectId) throws Exception {
 
         checkTeamMembership(projectId, user, "User not a project team member! Only team members can make changes!");
 
         Project project = getProjectById(projectId);
 
-        if (updatedProject.getName() != null) {
-            project.setName(updatedProject.getName());
+        if (updatedProjectModel.getName() != null) {
+            project.setName(updatedProjectModel.getName());
         }
-        if (updatedProject.getDescription() != null) {
-            project.setDescription(updatedProject.getDescription());
+        if (updatedProjectModel.getDescription() != null) {
+            project.setDescription(updatedProjectModel.getDescription());
         }
-        if (updatedProject.getDevelopmentScope() != null) {
-            project.setDevelopmentScope(updatedProject.getDevelopmentScope());
+        if (updatedProjectModel.getDevelopmentScope() != null) {
+            project.setDevelopmentScope(updatedProjectModel.getDevelopmentScope());
         }
-        if (!updatedProject.getTags().isEmpty()) {
-            project.setTags(updatedProject.getTags());
+        if (!updatedProjectModel.getTags().isEmpty()) {
+            project.setTags(updatedProjectModel.getTags());
         }
 
         return projectRepo.save(project);
@@ -129,7 +131,7 @@ public class ProjectServiceImpl implements ProjectService {
     public void addUserToProject(Long projectId, Long userId) throws Exception {
 
         Project project = getProjectById(projectId);
-        User user = userFinder.findUserById(userId);
+        User user = userService.findUserById(userId);
 
         if (!project.getTeam().contains(user)) {
             project.getDiscussion().getParticipants().add(user);
@@ -140,15 +142,19 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void removeUserFromProject(Long projectId, Long userId) throws Exception {
+    public void removeUserFromProject(Long projectId, User deleter, Long userId) throws Exception {
 
+        User userToDelete = userService.findUserById(userId);
         Project project = getProjectById(projectId);
-        User user = userFinder.findUserById(userId);
 
-        if (project.getTeam().contains(user)) {
-            project.getDiscussion().getParticipants().remove(user);
-            project.getTeam().remove(user);
-        }
+        if (project.getCreator() == userToDelete)
+            throw new Exception("The project creator cannot be removed from the team!");
+
+        else if (!project.getTeam().contains(userToDelete))
+            throw new Exception("User is not part of the project team!");
+
+        project.getDiscussion().getParticipants().remove(userToDelete);
+        project.getTeam().remove(userToDelete);
 
         projectRepo.save(project);
     }

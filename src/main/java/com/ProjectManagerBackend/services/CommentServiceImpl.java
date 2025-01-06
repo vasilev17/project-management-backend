@@ -81,9 +81,6 @@ public class CommentServiceImpl implements CommentService {
             throw new Exception("Ticket with such commentId does not exist!");
         }
 
-        Project project = ticketRepo.findProjectByTicketId(ticket.getId());
-        projectService.checkTeamMembership(project.getId(), user, "User not a project team member! Only team members can delete ticket comments!");
-
         Optional<Comment> commentOptional = commentRepo.findById(commentId);
 
         if (commentOptional.isEmpty())

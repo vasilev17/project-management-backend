@@ -1,5 +1,7 @@
 package com.ProjectManagerBackend.dtos;
 
+import com.ProjectManagerBackend.common.enums.Importance;
+import com.ProjectManagerBackend.common.enums.Progress;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -12,7 +14,7 @@ public class TicketDTO {
     private String name;
     private String description;
     private LocalDate deadline;
-    private String importance;
-    private String progress;
+    private Importance importance;
+    private Progress progress;
     private List<String> tags = new ArrayList<>();
 }

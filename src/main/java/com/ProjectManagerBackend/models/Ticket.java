@@ -1,5 +1,7 @@
 package com.ProjectManagerBackend.models;
 
+import com.ProjectManagerBackend.common.enums.Importance;
+import com.ProjectManagerBackend.common.enums.Progress;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -29,10 +31,14 @@ public class Ticket {
     private String name;
     private String description;
     private LocalDate deadline;
-    private String importance;
-    private String progress;
     private Long projectID;
     private List<String> tags = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    private Importance importance;
+
+    @Enumerated(EnumType.STRING)
+    private Progress progress;
 
     @JsonIgnore
     @OneToMany(mappedBy = "ticket", orphanRemoval = true, cascade = CascadeType.ALL)

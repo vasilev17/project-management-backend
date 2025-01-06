@@ -1,10 +1,11 @@
 package com.ProjectManagerBackend.viewmodels;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
-public class StatusMessageViewModel {
+public class CollaborationInvitationViewModel {
+
     private String message;
+    private String collabToken;
+
 }

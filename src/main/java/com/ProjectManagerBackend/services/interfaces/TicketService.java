@@ -1,12 +1,12 @@
 package com.ProjectManagerBackend.services.interfaces;
 
+import com.ProjectManagerBackend.common.enums.Progress;
 import com.ProjectManagerBackend.dtos.TicketDTO;
 import com.ProjectManagerBackend.models.Project;
 import com.ProjectManagerBackend.models.Ticket;
 import com.ProjectManagerBackend.models.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TicketService {
 
@@ -20,7 +20,7 @@ public interface TicketService {
 
     Ticket addUserToTicket(Long ticketId, User assigner, Long userId) throws Exception;
 
-    Ticket updateProgress(Long ticketId, User user, String progress) throws Exception;
+    Ticket updateProgress(Long ticketId, User user, Progress progress) throws Exception;
 
     Project getProjectByTicketId(Long ticketId) throws Exception;
 }

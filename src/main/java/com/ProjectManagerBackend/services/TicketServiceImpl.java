@@ -1,13 +1,15 @@
 package com.ProjectManagerBackend.services;
 
+import com.ProjectManagerBackend.common.enums.Progress;
 import com.ProjectManagerBackend.dtos.TicketDTO;
+import com.ProjectManagerBackend.mappers.TicketMapper;
 import com.ProjectManagerBackend.models.Project;
 import com.ProjectManagerBackend.models.Ticket;
 import com.ProjectManagerBackend.models.User;
 import com.ProjectManagerBackend.repositories.TicketRepository;
 import com.ProjectManagerBackend.services.interfaces.ProjectService;
 import com.ProjectManagerBackend.services.interfaces.TicketService;
-import com.ProjectManagerBackend.services.interfaces.UserFinder;
+import com.ProjectManagerBackend.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,10 @@ public class TicketServiceImpl implements TicketService {
     private ProjectService projectService;
 
     @Autowired
-    private UserFinder userFinder;
+    private UserService userService;
+
+    @Autowired
+    private TicketMapper ticketMapper;
 
     @Override
     public Ticket getTicketById(Long ticketId) throws Exception {
@@ -44,20 +49,14 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Ticket createTicket(TicketDTO ticketModel, Long projectId, User user) throws Exception {
 
-        projectService.checkTeamMembership(projectId, user, "User not a project team member! Only team members can create tickets!");
-
         Project project = projectService.getProjectById(projectId);
 
-        Ticket ticket = new Ticket();
-        ticket.setAuthor(user);
-        ticket.setName(ticketModel.getName());
-        ticket.setDescription(ticketModel.getDescription());
-        ticket.setProgress(ticketModel.getProgress());
-        ticket.setImportance(ticketModel.getImportance());
-        ticket.setDeadline(ticketModel.getDeadline());
-        ticket.setTags(ticketModel.getTags());
+        projectService.checkTeamMembership(projectId, user, "User not a project team member! Only team members can create tickets!");
+
+        Ticket ticket = ticketMapper.convertTicketDTOToTicket(ticketModel);
 
         ticket.setProject(project);
+        ticket.setAuthor(user);
 
         return ticketRepo.save(ticket);
     }
@@ -90,7 +89,7 @@ public class TicketServiceImpl implements TicketService {
 
         projectService.checkTeamMembership(project.getId(), assigner, "User not a project team member! Only team members can assign tickets!");
 
-        User user = userFinder.findUserById(userId);
+        User user = userService.findUserById(userId);
         Ticket ticket = getTicketById(ticketId);
         ticket.setAssignee(user);
 
@@ -103,7 +102,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Ticket updateProgress(Long ticketId, User user, String progress) throws Exception {
+    public Ticket updateProgress(Long ticketId, User user, Progress progress) throws Exception {
 
         Project project = ticketRepo.findProjectByTicketId(ticketId);
 
