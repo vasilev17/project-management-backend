@@ -1,5 +1,7 @@
 package com.ProjectManagerBackend.controllers;
 
+import com.ProjectManagerBackend.common.constants.ApiMessageConstants;
+import com.ProjectManagerBackend.common.constants.StatusMessageConstants;
 import com.ProjectManagerBackend.dtos.CommentDTO;
 import com.ProjectManagerBackend.mappers.CommentMapper;
 import com.ProjectManagerBackend.models.Comment;
@@ -8,6 +10,9 @@ import com.ProjectManagerBackend.services.interfaces.CommentService;
 import com.ProjectManagerBackend.services.interfaces.UserService;
 import com.ProjectManagerBackend.viewmodels.CommentViewModel;
 import com.ProjectManagerBackend.viewmodels.StatusMessageViewModel;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +34,12 @@ public class CommentController {
     private CommentMapper commentMapper;
 
     @PostMapping("/{ticketId}")
+    @Operation(summary = ApiMessageConstants.SEND_COMMENT, security = {@SecurityRequirement(name = "bearer-key")})
     public ResponseEntity<CommentViewModel> createComment(
             @RequestBody CommentDTO comment,
             @PathVariable Long ticketId,
-            @RequestHeader("Authorization") String jwt)
+            @Parameter(description = ApiMessageConstants.AUTHORIZATION_HEADER_MESSAGE)
+            @RequestHeader(value = "Authorization", required = false) String jwt)
             throws Exception {
 
         User user = userService.findUserProfileByJwt(jwt);
@@ -45,6 +52,7 @@ public class CommentController {
     }
 
     @GetMapping("/{ticketId}")
+    @Operation(summary = ApiMessageConstants.GET_COMMENT_BY_TICKET_ID)
     public ResponseEntity<List<CommentViewModel>> getCommentsByTicketId(@PathVariable Long ticketId) {
 
         List<Comment> comments = commentService.findCommentByTicketId(ticketId);
@@ -55,14 +63,16 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
+    @Operation(summary = ApiMessageConstants.DELETE_COMMENT, security = {@SecurityRequirement(name = "bearer-key")})
     public ResponseEntity<StatusMessageViewModel> deleteComment(@PathVariable Long commentId,
-                                                                @RequestHeader("Authorization") String jwt)
+                                                                @Parameter(description = ApiMessageConstants.AUTHORIZATION_HEADER_MESSAGE)
+                                                                @RequestHeader(value = "Authorization", required = false) String jwt)
             throws Exception {
 
         User user = userService.findUserProfileByJwt(jwt);
         commentService.deleteComment(commentId, user);
 
-        StatusMessageViewModel res = new StatusMessageViewModel("Comment deleted successfully!");
+        StatusMessageViewModel res = new StatusMessageViewModel(String.format(StatusMessageConstants.DELETION_SUCCESSFUL, "Comment"));
 
         return new ResponseEntity<>(res, HttpStatus.OK);
     }

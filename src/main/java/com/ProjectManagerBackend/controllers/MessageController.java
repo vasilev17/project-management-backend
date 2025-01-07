@@ -1,5 +1,6 @@
 package com.ProjectManagerBackend.controllers;
 
+import com.ProjectManagerBackend.common.constants.ApiMessageConstants;
 import com.ProjectManagerBackend.dtos.MessageDTO;
 import com.ProjectManagerBackend.mappers.MessageMapper;
 import com.ProjectManagerBackend.models.Message;
@@ -7,6 +8,9 @@ import com.ProjectManagerBackend.models.User;
 import com.ProjectManagerBackend.services.interfaces.MessageService;
 import com.ProjectManagerBackend.services.interfaces.UserService;
 import com.ProjectManagerBackend.viewmodels.MessageViewModel;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +31,11 @@ public class MessageController {
     private MessageMapper messageMapper;
 
     @PostMapping("/send/{projectId}")
+    @Operation(summary = ApiMessageConstants.SEND_MESSAGE, security = {@SecurityRequirement(name = "bearer-key")})
     public ResponseEntity<MessageViewModel> sendMessage(@RequestBody MessageDTO message,
                                                         @PathVariable Long projectId,
-                                                        @RequestHeader("Authorization") String jwt)
+                                                        @Parameter(description = ApiMessageConstants.AUTHORIZATION_HEADER_MESSAGE)
+                                                        @RequestHeader(value = "Authorization", required = false) String jwt)
             throws Exception {
 
         User user = userService.findUserProfileByJwt(jwt);
@@ -43,6 +49,7 @@ public class MessageController {
     }
 
     @GetMapping("/discussion/{projectId}")
+    @Operation(summary = ApiMessageConstants.GET_PROJECT_MESSAGES)
     public ResponseEntity<List<MessageViewModel>> getMessageDiscussionByProjectId(@PathVariable Long projectId)
             throws Exception {
 

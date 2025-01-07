@@ -18,7 +18,7 @@ public interface TicketService {
 
     void deleteTicket(Long ticketId, User user) throws Exception;
 
-    Ticket addUserToTicket(Long ticketId, User assigner, Long userId) throws Exception;
+    Ticket assignUserToTicket(Long ticketId, User assigner, Long userId) throws Exception;
 
     Ticket updateProgress(Long ticketId, User user, Progress progress) throws Exception;
 

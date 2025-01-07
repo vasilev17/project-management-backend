@@ -1,6 +1,7 @@
 package com.ProjectManagerBackend.services;
 
 
+import com.ProjectManagerBackend.common.constants.ExceptionConstants;
 import com.ProjectManagerBackend.models.CollaborationRequest;
 import com.ProjectManagerBackend.models.User;
 import com.ProjectManagerBackend.repositories.CollaborationRequestRepository;
@@ -20,7 +21,7 @@ public class CollaborationServiceImpl implements CollaborationService {
     private ProjectServiceImpl projectService;
 
     @Override
-    public String sendCollaborationRequest(User creator, Long projectId) throws Exception {
+    public String generateCollaborationCode(User creator, Long projectId) throws Exception {
 
         //Check if project exists
         projectService.getProjectById(projectId);
@@ -38,18 +39,18 @@ public class CollaborationServiceImpl implements CollaborationService {
             return requestToken;
 
         } catch (Exception e) {
-            throw new Exception("Error generating collaboration request!");
+            throw new Exception(ExceptionConstants.COLLABORATION_REQUEST_GENERATION_ERROR);
         }
 
     }
 
     @Override
-    public CollaborationRequest acceptCollaborationRequest(String token, Long userId) throws Exception {
+    public CollaborationRequest acceptCollaboration(String token, Long userId) throws Exception {
 
         CollaborationRequest request = collabRequestRepo.findByToken(token);
 
         if (request == null) {
-            throw new Exception("Invalid request token!");
+            throw new Exception(ExceptionConstants.INVALID_COLLABORATION_REQUEST_TOKEN);
         }
 
         return request;

@@ -1,9 +1,13 @@
 package com.ProjectManagerBackend.controllers;
 
+import com.ProjectManagerBackend.common.constants.ApiMessageConstants;
+import com.ProjectManagerBackend.common.constants.StatusMessageConstants;
 import com.ProjectManagerBackend.dtos.LoginDTO;
 import com.ProjectManagerBackend.dtos.RegistrationDTO;
 import com.ProjectManagerBackend.services.interfaces.UserService;
 import com.ProjectManagerBackend.viewmodels.AuthViewModel;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +24,13 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
+    @Operation(summary = ApiMessageConstants.REGISTER)
     public ResponseEntity<AuthViewModel> register(@RequestBody RegistrationDTO registrationModel) throws Exception {
 
         String token = userService.register(registrationModel);
 
         AuthViewModel response = new AuthViewModel();
-        response.setMessage("Registration successful!");
+        response.setMessage(String.format(StatusMessageConstants.SUCCESSFUL, "Registration"));
         response.setJwtToken(token);
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -33,12 +38,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
+    @Operation(summary = ApiMessageConstants.LOGIN)
     public ResponseEntity<AuthViewModel> login(@RequestBody LoginDTO loginModel) {
 
         String token = userService.login(loginModel);
 
         AuthViewModel response = new AuthViewModel();
-        response.setMessage("Login successful!");
+        response.setMessage(String.format(StatusMessageConstants.SUCCESSFUL, "Login"));
         response.setJwtToken(token);
 
         return new ResponseEntity<>(response, HttpStatus.OK);

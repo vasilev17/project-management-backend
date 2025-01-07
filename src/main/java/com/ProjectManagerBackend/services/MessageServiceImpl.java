@@ -1,5 +1,6 @@
 package com.ProjectManagerBackend.services;
 
+import com.ProjectManagerBackend.common.constants.ExceptionConstants;
 import com.ProjectManagerBackend.models.Discussion;
 import com.ProjectManagerBackend.models.Message;
 import com.ProjectManagerBackend.models.User;
@@ -28,22 +29,20 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Message sendMessage(User sender, Long projectId, String body) throws Exception {
 
-        projectService.checkTeamMembership(projectId, sender, "User not a project team member! Only team members can send discussion messages!");
+        projectService.checkTeamMembership(projectId, sender, String.format(ExceptionConstants.UNAUTHORIZED_ACTION, "send discussion messages"));
 
         Discussion discussion = projectService.getProjectById(projectId).getDiscussion();
 
         if (discussion == null)
-            throw new Exception("Discussion not found!");
+            throw new Exception(ExceptionConstants.DISCUSSION_WITH_PROJECT_ID_NOT_FOUND);
 
         Message message = new Message();
-
         message.setCreationDate(LocalDateTime.now());
         message.setBody(body);
         message.setDiscussion(discussion);
         message.setAuthor(sender);
 
         Message savedMessage = messageRepository.save(message);
-
         discussion.getMessages().add(savedMessage);
 
         return savedMessage;

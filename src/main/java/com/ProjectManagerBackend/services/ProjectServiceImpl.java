@@ -1,6 +1,7 @@
 package com.ProjectManagerBackend.services;
 
 import com.ProjectManagerBackend.common.enums.DevelopmentScope;
+import com.ProjectManagerBackend.common.constants.ExceptionConstants;
 import com.ProjectManagerBackend.dtos.ProjectDTO;
 import com.ProjectManagerBackend.mappers.ProjectMapper;
 import com.ProjectManagerBackend.models.Discussion;
@@ -77,7 +78,7 @@ public class ProjectServiceImpl implements ProjectService {
         Optional<Project> optionalProject = projectRepo.findById(projectId);
 
         if (optionalProject.isEmpty()) {
-            throw new Exception("Project not found!");
+            throw new Exception(String.format(ExceptionConstants.ID_NOT_FOUND, "Project", projectId));
         }
 
         return optionalProject.get();
@@ -86,7 +87,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void deleteProject(Long projectId, User user) throws Exception {
 
-        checkTeamMembership(projectId, user, "User not a project team member! Only team members can delete projects!");
+        checkTeamMembership(projectId, user, String.format(ExceptionConstants.UNAUTHORIZED_ACTION, "delete projects"));
 
         getProjectById((projectId));
         projectRepo.deleteById(projectId);
@@ -100,7 +101,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project updateProject(User user, ProjectDTO updatedProjectModel, Long projectId) throws Exception {
 
-        checkTeamMembership(projectId, user, "User not a project team member! Only team members can make changes!");
+        checkTeamMembership(projectId, user, String.format(ExceptionConstants.UNAUTHORIZED_ACTION, "make changes"));
 
         Project project = getProjectById(projectId);
 
@@ -148,10 +149,10 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = getProjectById(projectId);
 
         if (project.getCreator() == userToDelete)
-            throw new Exception("The project creator cannot be removed from the team!");
+            throw new Exception(ExceptionConstants.PROJECT_CREATOR_REMOVAL_ERROR);
 
         else if (!project.getTeam().contains(userToDelete))
-            throw new Exception("User is not part of the project team!");
+            throw new Exception(ExceptionConstants.USER_NOT_PART_OF_PROJECT_TEAM_ERROR);
 
         project.getDiscussion().getParticipants().remove(userToDelete);
         project.getTeam().remove(userToDelete);

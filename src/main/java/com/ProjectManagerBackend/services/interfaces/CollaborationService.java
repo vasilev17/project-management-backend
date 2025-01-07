@@ -5,8 +5,8 @@ import com.ProjectManagerBackend.models.User;
 
 public interface CollaborationService {
 
-    public String sendCollaborationRequest (User creator, Long projectId) throws Exception;
+    public String generateCollaborationCode (User creator, Long projectId) throws Exception;
 
-    public CollaborationRequest acceptCollaborationRequest(String token, Long userId) throws Exception;
+    public CollaborationRequest acceptCollaboration(String token, Long userId) throws Exception;
 
 }

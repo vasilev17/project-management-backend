@@ -1,5 +1,6 @@
 package com.ProjectManagerBackend.services;
 
+import com.ProjectManagerBackend.common.constants.ExceptionConstants;
 import com.ProjectManagerBackend.models.Comment;
 import com.ProjectManagerBackend.models.Project;
 import com.ProjectManagerBackend.models.Ticket;
@@ -37,15 +38,15 @@ public class CommentServiceImpl implements CommentService {
         Project project = ticketRepo.findProjectByTicketId(ticketId);
 
         if (project == null) {
-            throw new Exception("Project with such ticketId does not exist!");
+            throw new Exception(ExceptionConstants.PROJECT_WITH_TICKET_ID_NOT_FOUND);
         }
 
-        projectService.checkTeamMembership(project.getId(), user, "User not a project team member! Only team members can send ticket comments!");
+        projectService.checkTeamMembership(project.getId(), user, String.format(ExceptionConstants.UNAUTHORIZED_ACTION, "send ticket comments"));
 
         Optional<Ticket> ticketOptional = ticketRepo.findById(ticketId);
 
         if (ticketOptional.isEmpty())
-            throw new Exception("Ticket with id " + ticketId + " not found!");
+            throw new Exception(String.format(ExceptionConstants.ID_NOT_FOUND, "Ticket", ticketId));
 
         Ticket ticket = ticketOptional.get();
 
@@ -78,20 +79,20 @@ public class CommentServiceImpl implements CommentService {
         Ticket ticket = commentRepo.findTicketByCommentId(commentId);
 
         if (ticket == null) {
-            throw new Exception("Ticket with such commentId does not exist!");
+            throw new Exception(ExceptionConstants.TICKET_WITH_COMMENT_ID_NOT_FOUND);
         }
 
         Optional<Comment> commentOptional = commentRepo.findById(commentId);
 
         if (commentOptional.isEmpty())
-            throw new Exception("Comment with id " + commentId + " not found!");
+            throw new Exception(String.format(ExceptionConstants.ID_NOT_FOUND, "Comment", commentId));
 
         Comment comment = commentOptional.get();
 
         if (comment.getAuthor().equals(user))
             commentRepo.delete(comment);
         else
-            throw new Exception("User is not the comment author! Only authors can delete comments!");
+            throw new Exception(String.format(ExceptionConstants.UNAUTHORIZED_AUTHOR_ONLY_ACTION, "comment"));
 
     }
 

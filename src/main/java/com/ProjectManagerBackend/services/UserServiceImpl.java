@@ -1,5 +1,6 @@
 package com.ProjectManagerBackend.services;
 
+import com.ProjectManagerBackend.common.constants.ExceptionConstants;
 import com.ProjectManagerBackend.config.JwtProvider;
 import com.ProjectManagerBackend.dtos.LoginDTO;
 import com.ProjectManagerBackend.dtos.RegistrationDTO;
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService {
         User existingUser = userRepo.findByEmail(registrationModel.getEmail());
 
         if (existingUser != null)
-            throw new Exception("User with this email already exists!");
+            throw new Exception(ExceptionConstants.USER_WITH_EMAIL_ALREADY_EXISTS);
 
         User newUser = userMapper.convertRegistrationDTOToUser(registrationModel);
         userRepo.save(newUser);
@@ -75,7 +76,7 @@ public class UserServiceImpl implements UserService {
         boolean doesPassMatch = passEncoder.matches(credentials.getPassword(), existingUser.getPassword());
 
         if (existingUser == null || doesPassMatch == false)
-            throw new BadCredentialsException("Incorrect username or password!");
+            throw new BadCredentialsException(ExceptionConstants.INCORRECT_USERNAME_OR_PASSWORD);
 
         return new UsernamePasswordAuthenticationToken(existingUser, null, existingUser.getAuthorities());
     }
@@ -108,7 +109,7 @@ public class UserServiceImpl implements UserService {
 
         User user = userRepo.findByEmail(email);
         if (user == null) {
-            throw new Exception("User not found!");
+            throw new Exception(String.format(ExceptionConstants.NOT_FOUND, "User"));
         }
         return user;
     }
@@ -118,7 +119,7 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> optionalUser = userRepo.findById(userId);
         if (optionalUser.isEmpty()) {
-            throw new Exception("User not found!");
+            throw new Exception(String.format(ExceptionConstants.NOT_FOUND, "User"));
         }
         return optionalUser.get();
     }

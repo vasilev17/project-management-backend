@@ -1,5 +1,6 @@
 package com.ProjectManagerBackend.config;
 
+import com.ProjectManagerBackend.common.constants.ExceptionConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -31,6 +32,9 @@ public class JwtProvider {
     }
 
     public String getTokenEmail(String token) {
+
+        if (token == null || token.isEmpty())
+            throw new IllegalArgumentException(ExceptionConstants.JWT_TOKEN_EMPTY);
 
         token = token.substring(7);
 

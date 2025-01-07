@@ -1,6 +1,7 @@
 package com.ProjectManagerBackend.services;
 
 import com.ProjectManagerBackend.common.enums.Progress;
+import com.ProjectManagerBackend.common.constants.ExceptionConstants;
 import com.ProjectManagerBackend.dtos.TicketDTO;
 import com.ProjectManagerBackend.mappers.TicketMapper;
 import com.ProjectManagerBackend.models.Project;
@@ -38,7 +39,7 @@ public class TicketServiceImpl implements TicketService {
         if (ticket.isPresent()) {
             return ticket.get();
         }
-        throw new Exception("No ticket found with ticket Id " + ticketId);
+        throw new Exception(String.format(ExceptionConstants.ID_NOT_FOUND, "Ticket", ticketId));
     }
 
     @Override
@@ -51,7 +52,7 @@ public class TicketServiceImpl implements TicketService {
 
         Project project = projectService.getProjectById(projectId);
 
-        projectService.checkTeamMembership(projectId, user, "User not a project team member! Only team members can create tickets!");
+        projectService.checkTeamMembership(projectId, user, String.format(ExceptionConstants.UNAUTHORIZED_ACTION, "create tickets"));
 
         Ticket ticket = ticketMapper.convertTicketDTOToTicket(ticketModel);
 
@@ -67,10 +68,10 @@ public class TicketServiceImpl implements TicketService {
         Project project = ticketRepo.findProjectByTicketId(ticketId);
 
         if (project == null) {
-            throw new Exception("Project with such ticketId does not exist!");
+            throw new Exception(ExceptionConstants.PROJECT_WITH_TICKET_ID_NOT_FOUND);
         }
 
-        projectService.checkTeamMembership(project.getId(), user, "User not a project team member! Only team members can delete tickets!");
+        projectService.checkTeamMembership(project.getId(), user, String.format(ExceptionConstants.UNAUTHORIZED_ACTION, "delete tickets"));
 
         //Check if ticket exists
         getTicketById(ticketId);
@@ -79,15 +80,15 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Ticket addUserToTicket(Long ticketId, User assigner, Long userId) throws Exception {
+    public Ticket assignUserToTicket(Long ticketId, User assigner, Long userId) throws Exception {
 
         Project project = ticketRepo.findProjectByTicketId(ticketId);
 
         if (project == null) {
-            throw new Exception("Project with such ticketId does not exist!");
+            throw new Exception(ExceptionConstants.PROJECT_WITH_TICKET_ID_NOT_FOUND);
         }
 
-        projectService.checkTeamMembership(project.getId(), assigner, "User not a project team member! Only team members can assign tickets!");
+        projectService.checkTeamMembership(project.getId(), assigner, String.format(ExceptionConstants.UNAUTHORIZED_ACTION, "assign tickets"));
 
         User user = userService.findUserById(userId);
         Ticket ticket = getTicketById(ticketId);
@@ -107,10 +108,10 @@ public class TicketServiceImpl implements TicketService {
         Project project = ticketRepo.findProjectByTicketId(ticketId);
 
         if (project == null) {
-            throw new Exception("Project with such ticketId does not exist!");
+            throw new Exception(ExceptionConstants.PROJECT_WITH_TICKET_ID_NOT_FOUND);
         }
 
-        projectService.checkTeamMembership(project.getId(), user, "User not a project team member! Only team members can update ticket progress!");
+        projectService.checkTeamMembership(project.getId(), user, String.format(ExceptionConstants.UNAUTHORIZED_ACTION, "update ticket progress"));
 
         Ticket ticket = getTicketById(ticketId);
         ticket.setProgress(progress);
