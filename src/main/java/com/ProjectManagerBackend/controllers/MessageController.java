@@ -11,6 +11,7 @@ import com.ProjectManagerBackend.viewmodels.MessageViewModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/messages")
+@Tag(name = ApiMessageConstants.Message_TAG_NAME, description = ApiMessageConstants.Message_TAG_DESCRIPTION)
 public class MessageController {
 
     @Autowired

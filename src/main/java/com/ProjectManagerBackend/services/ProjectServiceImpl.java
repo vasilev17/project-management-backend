@@ -40,6 +40,9 @@ public class ProjectServiceImpl implements ProjectService {
         createdProject.setCreator(user);
         createdProject.getTeam().add(user);
 
+        if (projectModel.getName() == null || projectModel.getName().isEmpty())
+            throw new Exception(String.format(ExceptionConstants.FIELD_REQUIRED, "name"));
+
         Project saveProject = projectRepo.save(createdProject);
 
         Discussion discussion = new Discussion();
@@ -57,8 +60,16 @@ public class ProjectServiceImpl implements ProjectService {
         List<Project> projects = projectRepo.findAll();
 
         if (email != null) {
-            User user = userService.findUserByEmail(email);
-            projects = projectRepo.findByTeamContainingOrCreator(user, user);
+
+            try {
+                User user = userService.findUserByEmail(email);
+                projects = projectRepo.findByTeamContainingOrCreator(user, user);
+            } catch (Exception ex) {
+                throw new Exception(ex.getMessage()
+                        .substring(0, ex.getMessage().length() - 1)
+                        + " with email \"" + email + "\"");
+            }
+
         }
         if (developmentScope != null) {
             projects = projects.stream().filter(project -> project.getDevelopmentScope().equals(developmentScope))

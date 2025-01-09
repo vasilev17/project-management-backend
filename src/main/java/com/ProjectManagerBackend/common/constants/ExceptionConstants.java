@@ -3,6 +3,7 @@ package com.ProjectManagerBackend.common.constants;
 public class ExceptionConstants {
 
     public static final String NOT_FOUND = "%s not found!";
+    public static final String FIELD_REQUIRED = "%s field is required!";
     public static final String ID_NOT_FOUND = "%s with id %s not found!";
     public static final String UNAUTHORIZED_AUTHOR_ONLY_ACTION = "User is not the %1$s author! Only authors can delete %1$ss!";
     public static final String UNAUTHORIZED_ACTION = "User not a project team member! Only team members can %s!";

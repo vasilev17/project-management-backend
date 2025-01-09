@@ -2,6 +2,8 @@ package com.ProjectManagerBackend.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,20 +28,26 @@ public class AppConfig {
 
     @Bean
     public OpenAPI openAPI() {
+
         final String securitySchemeName = "bearer-key";
-        return new OpenAPI()
-                //Adds auth to all API endpoints
-                // .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
-                .components(
-                        new Components()
-                                .addSecuritySchemes(securitySchemeName,
-                                        new SecurityScheme()
-                                                .name(securitySchemeName)
-                                                .type(SecurityScheme.Type.HTTP)
-                                                .scheme("bearer")
-                                                .bearerFormat("JWT")
-                                )
-                );
+        OpenAPI openAPI = new OpenAPI();
+
+        openAPI.setInfo(new Info()
+                .title("Project Manager API")
+                .description("API definition for the Project Manager System."));
+
+        openAPI.components(
+                new Components()
+                        .addSecuritySchemes(securitySchemeName,
+                                new SecurityScheme()
+                                        .name(securitySchemeName)
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")
+                        )
+        );
+
+        return openAPI;
     }
 
     @Bean

@@ -14,7 +14,9 @@ import com.ProjectManagerBackend.viewmodels.TicketViewModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/tickets")
+@Tag(name = ApiMessageConstants.TICKET_TAG_NAME, description = ApiMessageConstants.TICKET_TAG_DESCRIPTION)
 public class TicketController {
 
     @Autowired

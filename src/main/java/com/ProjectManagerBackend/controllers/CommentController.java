@@ -13,6 +13,7 @@ import com.ProjectManagerBackend.viewmodels.StatusMessageViewModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
+@Tag(name = ApiMessageConstants.COMMENT_TAG_NAME, description = ApiMessageConstants.COMMENT_TAG_DESCRIPTION)
 public class CommentController {
 
     @Autowired

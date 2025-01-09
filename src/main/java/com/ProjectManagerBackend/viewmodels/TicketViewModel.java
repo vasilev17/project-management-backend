@@ -14,6 +14,7 @@ import java.util.List;
 public class TicketViewModel {
 
     private Long id;
+    private Long projectID;
     private String description;
     private String name;
     private List<String> tags = new ArrayList<>();
@@ -22,6 +23,5 @@ public class TicketViewModel {
     private Importance importance;
     private User assignee;
     private User author;
-    private Project project;
 
 }

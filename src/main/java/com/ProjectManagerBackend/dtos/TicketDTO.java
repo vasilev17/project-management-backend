@@ -14,7 +14,7 @@ public class TicketDTO {
     private String name;
     private String description;
     private LocalDate deadline;
-    private Importance importance;
-    private Progress progress;
+    private Importance importance = Importance.Low;
+    private Progress progress = Progress.ToDo;
     private List<String> tags = new ArrayList<>();
 }

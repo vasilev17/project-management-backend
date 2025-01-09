@@ -29,9 +29,9 @@ public class Ticket {
     private Project project;
 
     private String name;
+    private Long projectID;
     private String description;
     private LocalDate deadline;
-    private Long projectID;
     private List<String> tags = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

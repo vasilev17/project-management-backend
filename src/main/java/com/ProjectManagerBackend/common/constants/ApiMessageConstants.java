@@ -19,7 +19,7 @@ public class ApiMessageConstants {
 
     public static final String ASSIGN_USER_TO_TICKET = "Assign user to ticket";
 
-    public static final String GET_FILTERED_PROJECTS = "Get filtered projects %s";
+    public static final String GET_FILTERED_PROJECTS = "Get filtered projects";
 
     public static final String CREATE_PROJECT = "Create a new project";
     public static final String CREATE_TICKET = "Create project ticket";
@@ -47,5 +47,21 @@ public class ApiMessageConstants {
     public static final String GET_FILTERED_PROJECTS_DESCRIPTION = "Get projects by email/developmentScope/tag";
     public static final String SEARCH_PERSONAL_PROJECTS_DESCRIPTION = "Search within users' projects by name/team member";
 
+//---------------------------Tags---------------------------
+
+    public static final String USER_TAG_NAME = "A - User Controller";
+    public static final String USER_TAG_DESCRIPTION = "Endpoints for managing users";
+
+    public static final String PROJECT_TAG_NAME = "B - Project Controller";
+    public static final String PROJECT_TAG_DESCRIPTION = "Endpoints for managing projects";
+
+    public static final String TICKET_TAG_NAME = "C - Ticket Controller";
+    public static final String TICKET_TAG_DESCRIPTION = "Endpoints for managing project tickets";
+
+    public static final String Message_TAG_NAME = "D - Message Controller";
+    public static final String Message_TAG_DESCRIPTION = "Endpoints for managing project discussion messages";
+
+    public static final String COMMENT_TAG_NAME = "E - Comment Controller";
+    public static final String COMMENT_TAG_DESCRIPTION = "Endpoints for managing ticket comments";
 
 }

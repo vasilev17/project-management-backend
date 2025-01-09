@@ -54,13 +54,18 @@ public class TicketServiceImpl implements TicketService {
 
         projectService.checkTeamMembership(projectId, user, String.format(ExceptionConstants.UNAUTHORIZED_ACTION, "create tickets"));
 
+        if (ticketModel.getName() == null || ticketModel.getName().isEmpty())
+            throw new Exception(String.format(ExceptionConstants.FIELD_REQUIRED, "Name"));
+
         Ticket ticket = ticketMapper.convertTicketDTOToTicket(ticketModel);
 
         ticket.setProject(project);
         ticket.setAuthor(user);
+        ticket.setProjectID(projectId);
 
         return ticketRepo.save(ticket);
     }
+
 
     @Override
     public void deleteTicket(Long ticketId, User user) throws Exception {

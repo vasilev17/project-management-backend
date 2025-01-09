@@ -21,6 +21,7 @@ public interface TicketMapper {
     Ticket convertTicketDTOToTicket(TicketDTO dto);
 
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "projectID", source = "projectID")
     @Mapping(target = "description", source = "description")
     @Mapping(target = "name", source = "name")
     @Mapping(target = "tags", source = "tags")
@@ -29,10 +30,10 @@ public interface TicketMapper {
     @Mapping(target = "importance", source = "importance")
     @Mapping(target = "assignee", source = "assignee")
     @Mapping(target = "author", source = "author")
-    @Mapping(target = "project", source = "project")
     TicketViewModel convertTicketToTicketViewModel(Ticket entity);
 
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "projectID", source = "projectID")
     @Mapping(target = "description", source = "description")
     @Mapping(target = "name", source = "name")
     @Mapping(target = "tags", source = "tags")
@@ -41,7 +42,6 @@ public interface TicketMapper {
     @Mapping(target = "importance", source = "importance")
     @Mapping(target = "assignee", source = "assignee")
     @Mapping(target = "author", source = "author")
-    @Mapping(target = "project", source = "project")
     List<TicketViewModel> convertTicketsToTicketViewModels(List<Ticket> entities);
 
 }
