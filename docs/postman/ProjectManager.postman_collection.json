@@ -1,0 +1,710 @@
+{
+	"info": {
+		"_postman_id": "e31ef775-f90e-48df-9ace-6d8db4aee1a5",
+		"name": "ProjectManager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19346229",
+		"_collection_link": "https://team-vasilev.postman.co/workspace/SilverScreen~6c78ff75-d920-4286-ae23-a1d4eba099ec/collection/19346229-e31ef775-f90e-48df-9ace-6d8db4aee1a5?action=share&source=collection_link&creator=19346229"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "LOGIN </users/login>",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"mymail1@abv.bg\",\r\n    \"password\":\"mypass1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8082/users/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REGISTER </users/register>",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Valentin Vasilev\",\r\n    \"email\":\"mymail1@abv.bg\",\r\n    \"password\":\"mypass1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8082/users/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "projects",
+			"item": [
+				{
+					"name": "Collaboration",
+					"item": [
+						{
+							"name": "GENERATE COLLAB CODE </projects/request/{projectId}>",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MzU5OTQxMDIsImV4cCI6MTczNjA4MDUwMiwiZW1haWwiOiJteW1haWwxQGFidi5iZyJ9.zrCavCQSIyVoqYUy2EEkglprYbOoX0bkTlc1g79FivC2jXLv9MLcjPOvtgGUCQvhg-f563fGzdERsiP2Se8J1w",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:8082/projects/request/2",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"projects",
+										"request",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ACCEPT COLLAB </projects/accept_request/{token} >",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MzYwMDY2MzQsImV4cCI6MTczNjA5MzAzNCwiZW1haWwiOiJteW1haWwyQGFidi5iZyJ9.Yg6ZM1H6tmAq0Bc5pPcDcPoLRDvpPnf6YUUKh7ESr-KQ2jYveFWc0CVc4SXODYiLlY5_BV5hJwJMDMAcz3K_EA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8082/projects/accept_request?token=b1a1cdf2-6f3e-4d90-a04a-3e5d3cc2a193",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"projects",
+										"accept_request"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "b1a1cdf2-6f3e-4d90-a04a-3e5d3cc2a193"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "CREATE PROJECT </projects>",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MzYxNzM2NDQsImV4cCI6MTczNjI2MDA0NCwiZW1haWwiOiJteW1haWwxQGFidi5iZyJ9.xDC9TJpEqLfPQxKKxuKjsi1t7shlcNsVmWNsMUqa8GMCYEOaiiZBd9hiN6E4TGa8_3JYYIZUUdks_DqfBJ97jQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\":\"proj445\",\r\n\"description\":\"My new project\",\r\n\"tags\":[\"React\", \"Java\"],\r\n\"developmentScope\":\"Frontend\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8082/projects",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"projects"
+							]
+						},
+						"description": "Create project"
+					},
+					"response": []
+				},
+				{
+					"name": "GET PROJECT BY ID </projects/{projectId}>",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/projects/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"projects",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET FILTERED PROJECTS </projects?param=value>",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/projects?email=mymail1@abv.bg",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"projects"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "mymail1@abv.bg"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SEARCH PROJECTS </projects/search?keyword={value}>",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MzU5OTgyMzksImV4cCI6MTczNjA4NDYzOSwiZW1haWwiOiJteW1haWwyQGFidi5iZyJ9.GjDhB4jHHupr93N1Q2s96X-gDafYzV5fnLIfUD3hTFZZIc2tIuO8W3qtODCTTiNN6qgkDQB-1uIC-ZzwGMNrGQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/projects/search?keyword=3",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"projects",
+								"search"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE PROJECT </projects/{projectId}>",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MzYxNzM2NDQsImV4cCI6MTczNjI2MDA0NCwiZW1haWwiOiJteW1haWwxQGFidi5iZyJ9.xDC9TJpEqLfPQxKKxuKjsi1t7shlcNsVmWNsMUqa8GMCYEOaiiZBd9hiN6E4TGa8_3JYYIZUUdks_DqfBJ97jQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\":\"proj2\",\r\n\"description\":\"My 2nd project\",\r\n\"tags\":[\"React\", \"Ruby\"],\r\n\"developmentScope\":\"FrontEnd\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8082/projects/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"projects",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE PROJECT </projects/{projectId}>",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MzU5OTgyMzksImV4cCI6MTczNjA4NDYzOSwiZW1haWwiOiJteW1haWwyQGFidi5iZyJ9.GjDhB4jHHupr93N1Q2s96X-gDafYzV5fnLIfUD3hTFZZIc2tIuO8W3qtODCTTiNN6qgkDQB-1uIC-ZzwGMNrGQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/projects/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"projects",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "REMOVE USER FROM PROJECT </projects/{projectId}/team/{userId}>",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MzYxNzM2NDQsImV4cCI6MTczNjI2MDA0NCwiZW1haWwiOiJteW1haWwxQGFidi5iZyJ9.xDC9TJpEqLfPQxKKxuKjsi1t7shlcNsVmWNsMUqa8GMCYEOaiiZBd9hiN6E4TGa8_3JYYIZUUdks_DqfBJ97jQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/projects/3/team/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"projects",
+								"3",
+								"team",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "tickets",
+			"item": [
+				{
+					"name": "CREATE TICKET </tickets>",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MzYwODAyMDUsImV4cCI6MTczNjE2NjYwNSwiZW1haWwiOiJteW1haWwxQGFidi5iZyJ9.d7dh6csbQhp4m2d1K7pLgz4FYdGIlnhFJ7GwKBbes2U9lQ644qLc-0BjdRLeRSooi-_jNcjVkvpVq6oPC5M09g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"name\": \"5th Bug\",\r\n\"description\":\"Projects 5th Bug\",\r\n\"progress\": \"In Progress\",\r\n\"importance\": \"High\",\r\n\"deadline\": \"2024-12-31\",\r\n\"tags\":[\"Backend\", \"Game\", \"Optimization\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8082/tickets/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"tickets",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET TICKET BY ID </tickets/{ticketId}>",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/tickets/52",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"tickets",
+								"52"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET PROJECT TICKETS </tickets/project/{projectId}>",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/tickets/project/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"tickets",
+								"project",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ASSIGN USER TO TICKET </tickets/{ticketId}/assignee/{userId}>",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MzYyNzUzMTQsImV4cCI6MTczNjM2MTcxNCwiZW1haWwiOiJteW1haWwxQGFidi5iZyJ9.zJTAyWKY7Xy4vsi-stj2m0hQHPy_2uFs0zFf6LWBU2AbcoeNu9BBoPr71_rU8vewDYgDMkvLvAdk_VYbQqX9OA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/tickets/1/assignee/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"tickets",
+								"1",
+								"assignee",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE TICKET PROGRESS </tickets/{ticketId}/progress/{progress}>",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/tickets/52/progress/In Progress",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"tickets",
+								"52",
+								"progress",
+								"In Progress"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE TICKET </tickets/{ticketId}>",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MzYwODAyMDUsImV4cCI6MTczNjE2NjYwNSwiZW1haWwiOiJteW1haWwxQGFidi5iZyJ9.d7dh6csbQhp4m2d1K7pLgz4FYdGIlnhFJ7GwKBbes2U9lQ644qLc-0BjdRLeRSooi-_jNcjVkvpVq6oPC5M09g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/tickets/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"tickets",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "messages",
+			"item": [
+				{
+					"name": "SEND PROJECT MESSAGE </messages/send/{projectId}>",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MzYwODAyMDUsImV4cCI6MTczNjE2NjYwNSwiZW1haWwiOiJteW1haWwxQGFidi5iZyJ9.d7dh6csbQhp4m2d1K7pLgz4FYdGIlnhFJ7GwKBbes2U9lQ644qLc-0BjdRLeRSooi-_jNcjVkvpVq6oPC5M09g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"body\":\"Hello 3rd time!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8082/messages/send/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"messages",
+								"send",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET PROJECT MESSAGES </messages/discussion/{projectId}>",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/messages/discussion/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"messages",
+								"discussion",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "comments",
+			"item": [
+				{
+					"name": "SEND TICKET COMMENT </comments/{ticketId}>",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MzYwODAyMDUsImV4cCI6MTczNjE2NjYwNSwiZW1haWwiOiJteW1haWwxQGFidi5iZyJ9.d7dh6csbQhp4m2d1K7pLgz4FYdGIlnhFJ7GwKBbes2U9lQ644qLc-0BjdRLeRSooi-_jNcjVkvpVq6oPC5M09g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"body\":\"Can I help?\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8082/comments/52",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"comments",
+								"52"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET TICKET COMMENTS </comments/{ticketId}>",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/comments/52",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"comments",
+								"52"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE COMMENT </comments/{commentId}>",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MzYwODAyMDUsImV4cCI6MTczNjE2NjYwNSwiZW1haWwiOiJteW1haWwxQGFidi5iZyJ9.d7dh6csbQhp4m2d1K7pLgz4FYdGIlnhFJ7GwKBbes2U9lQ644qLc-0BjdRLeRSooi-_jNcjVkvpVq6oPC5M09g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8082/comments/54",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"comments",
+								"54"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "VIEW API DOCS </v3/api-docs>",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8082/v3/api-docs",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"v3",
+						"api-docs"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
