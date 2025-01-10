@@ -76,7 +76,7 @@ jwt.secret=<JwtSecretKey>
 
 
 ### 4. Create Database
-Create a new database schema named `project_manager`:
+Create a new database named `project_manager`:
 
 ```sql
 CREATE DATABASE project_manager;
