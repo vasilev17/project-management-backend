@@ -75,6 +75,13 @@ jwt.secret=<JwtSecretKey>
 >```
 
 
+### 4. Create Database
+Create a new database schema named `project_manager`:
+
+```sql
+CREATE DATABASE project_manager;
+```
+
 ## API Testing
 One option is to use [OpenAPI Swagger](https://springdoc.org/) available at:
 ```
