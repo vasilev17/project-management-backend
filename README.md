@@ -17,15 +17,19 @@
 <br><br>
 ### System Entity–relationship model:
 
-![Project Manager ERD](docs/images/Project%20Manager%20ERD.png)
+![Entity–relationship model](docs/images/Project%20Manager%20ERD.png)
+
+### API Endpoints:
+
+<img width="1418" height="847" alt="Postman Endpoints" src="https://github.com/user-attachments/assets/98c0c844-5e78-473c-a57a-7d8059034335" />
 
 ### Example project page wireframe:
 
-![Project Manager ERD](docs/images/Main%20Page%20(Wireframe).png)
+![Example project page wireframe](docs/images/Main%20Page%20(Wireframe).png)
 
 ### Example ticket page wireframe:
 
-![Project Manager ERD](docs/images/Ticket%20Page%20(Wireframe).png)
+![Example ticket page wireframe](docs/images/Ticket%20Page%20(Wireframe).png)
 
 
 ## Project Local Setup
