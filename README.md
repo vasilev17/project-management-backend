@@ -1,4 +1,4 @@
-# Project Manager Backend
+# 💼 Project Manager Backend
 
 **Project Manager** is a java spring boot backend project that essentially represents the server-side API for a social, team based kanban-style system for task management.
 
