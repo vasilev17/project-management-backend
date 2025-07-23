@@ -17,27 +17,23 @@
 <br><br>
 ### System Entity–relationship model:
 
-![Entity–relationship model](docs/images/Project%20Manager%20ERD.png)
+<img width="1421" height="849" alt="Project Manager ERD" src="https://github.com/user-attachments/assets/deaea178-fdf3-4727-802d-e31ed44db515" />
 
 ### API Endpoints:
 
 <img width="1418" height="847" alt="Postman Endpoints" src="https://github.com/user-attachments/assets/98c0c844-5e78-473c-a57a-7d8059034335" />
 
 ### Example project page wireframe:
+<img width="1409" height="837" alt="Main Page (Wireframe)" src="https://github.com/user-attachments/assets/3f3eb431-cc85-4ffd-91c8-d71e10c8db67" />
 
-![Example project page wireframe](docs/images/Main%20Page%20(Wireframe).png)
 
 ### Example ticket page wireframe:
-
-![Example ticket page wireframe](docs/images/Ticket%20Page%20(Wireframe).png)
-
+<img width="1307" height="781" alt="Ticket Page (Wireframe)" src="https://github.com/user-attachments/assets/c34838fb-2585-4d0d-a1e2-739d19cb7259" />
 
 ## Project Local Setup
-
 To get started with the project locally, follow the instructions below. This will guide you through setting up the development environment and running the application on your machine.
 
 ### Prerequisites
-
 Before setting up the project, ensure you have the following installed on your machine:
 
 - [Java](https://www.oracle.com/java/technologies/downloads/) (>= JDK 23)
